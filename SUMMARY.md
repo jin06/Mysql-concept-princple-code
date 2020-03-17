@@ -1,2 +1,2 @@
 # 目录
-* [序][README.md]
+* [序](README.md)

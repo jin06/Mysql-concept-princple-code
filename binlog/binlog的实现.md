@@ -3,7 +3,7 @@
 ## 事件类型
 > 代码地址 sql/log_event.h sql/log_event.cc ， log_event.cc 中有一个事件code和文字的映射表，截取下来就是事件类型。
 >
-`C++
+` C++
 
 const char* Log_event::get_type_str(Log_event_type type)
 {
