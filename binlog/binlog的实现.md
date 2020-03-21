@@ -47,3 +47,74 @@ const char* Log_event::get_type_str(Log_event_type type)
 }
 
 ```
+
+> 举例：一次写入事件，会发生QUERY_EVENT、TABLE_MAP_EVENT、WRITE_ROWS_EVENT、XID_EVENT。QUERY_EVENT是
+> 事务开始记录的事件，内容就是BEGIN。TABLE_MAP_EVENT是描述即将变化的表的事件。最后是WRITE_ROWS_EVENT表示插入了一条数据。
+>
+
+## Log_event 结构
+
+> 文件在sql/log_event.h
+>
+>
+> Log_event的二进制结构有三部分内容Common-Header、Post-Header、Body。
+> * 通用头部
+>   > 在同一个mysql版本中，所有的log_event 有相同的头部信息。例如每个头部字段的含义和所占用的长度
+> * post-header
+>   > 每种log的特殊头部信息的格式。
+> * body 
+>   > 保存的信息。                  
+
+<table>
+  <caption>Common-Header 通用头部</caption>
+  <tr>
+    <th>Name 名称</th>
+    <th>Format 格式</th>
+    <th>Description 描述</th>
+  </tr>
+  <tr>
+    <td>timestamp</td>
+    <td>4 byte unsigned integer</td>
+    <td>The time when the query started, in seconds since 1970.
+    </td>
+  </tr>
+  <tr>
+    <td>type</td>
+    <td>1 byte enumeration</td>
+    <td>See enum #Log_event_type.</td>
+  </tr>
+  <tr>
+    <td>server_id</td>
+    <td>4 byte unsigned integer</td>
+    <td>Server ID of the server that created the event.</td>
+  </tr>
+  <tr>
+    <td>total_size</td>
+    <td>4 byte unsigned integer</td>
+    <td>The total size of this event, in bytes.  In other words, this
+    is the sum of the sizes of Common-Header, Post-Header, and Body.
+    包括了通用头、post-header和body的所有信息占用的字节数量
+    </td>
+  </tr>
+  <tr>
+    <td>master_position</td>
+    <td>4 byte unsigned integer</td>
+    <td>The position of the next event in the master binary log, in
+    bytes from the beginning of the file.  In a binlog that is not a
+    relay log, this is just the position of the next event, in bytes
+    from the beginning of the file.  In a relay log, this is
+    the position of the next event in the master's binlog.
+    在binlog中保存的是下一个事件的地址，在relaylog中保存的是master的binlog地址
+    </td>
+  </tr>
+  <tr>
+    <td>flags</td>
+    <td>2 byte bitfield</td>
+    <td>See Log_event::flags.</td>
+  </tr>
+ </table>                       
+ 
+ 
+ ## binlog的写入过程
+ 
+ 
