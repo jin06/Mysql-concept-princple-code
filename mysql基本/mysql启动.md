@@ -9,13 +9,13 @@
     *  init_sql_statement_names().  初始化statement的一个数组，里面放了一些sql的语句声明，可能后边要用。
     *  sys_var_init(); 初始化mysql的配置参数。
     *  handle_early_options() 。初始化一些组件，是否启用performance_schema、help和bootstrap相关配置，因为server的其他部分要依赖它们。 
-    *   mysql_audit_initialize(). 审计相关功能。
+    *  mysql_audit_initialize(). 审计相关功能。
     *  logger.init_base(); 初始化log的基本功能，初始化handler函数和错误日志的初始化。table log handler 不在这里初始化。
     *  my_init_signals(); 处理一些软终端信号。
         > 设置信号的处理方式：屏蔽信号 SIGSEGV（一个进程执行了一个无效的内存引用）、SIGABRT、SIGBUS、SIGILL、SIGFPE等，一些默认行为是关闭进程的信号。
         
         > 改变一些信号的默认处理方式，例如SIGPIPE、SIGQUIT、SIGHUP等。
-    *   pthread_attr_setstacksize(&connection_attrib,my_thread_stack_size + guardize);分配堆栈空间大小。  
+    *   pthread_att_setstacksize(&connection_attrib,my_thread_stack_size + guardize);分配堆栈空间大小。  
     *   生成服务器的uuid：读取auto.cnf.如果存在就不生成， 如果不存在就生成uuid后写入auto.cnf
     *   如果开启了binlog，进行一些binlog的初始化。如果开启了gtid，则进行一些工作，大概的意思是把系统启动时的一些事件写入到binlog（不太确定）。
     *   init_ssl()
